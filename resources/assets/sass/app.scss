@@ -1,0 +1,46 @@
+
+// Fonts
+@import url("//fast.fonts.net/cssapi/ca7e9c0c-8b3f-4e48-8408-60d6a58a48ac.css");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+.checkbox {
+    margin: 0px;
+}
+
+.correct {
+    background-color: $brand-success;
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+
+.incorrect {
+    background-color: $brand-danger;
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+
+.table-quiz {
+    margin-bottom: 0px;
+
+    tbody {
+        tr {
+            td {
+                padding: 0;
+            }
+        }
+    }
+}
+
+.question-name {
+    display: block;
+    padding: 10px;
+}
