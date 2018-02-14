@@ -13,24 +13,55 @@
                         <div class="table-responsive">
                             <table class="table table-quiz">
                                 @foreach ( $quiz->questions() as $count => $question )
-                                <tr id="{{ str_slug(str_replace(' (Bonus)', '', $question['name']), '') }}">
+                                <tr id="round1{{ str_slug(str_replace(' (Bonus)', '', $question['name']), '') }}">
                                     <td style="width: 80%; <?= ( $count == 0 ) ? 'border-top: 0px;' : ''; ?>">
-                                        <input type="hidden" name="{{ str_slug(str_replace(' (Bonus)', '', $question['name']), '_') }}_score" value="0" data-max-score="{{ $question['points'] }}"/>
+                                        <input type="hidden" name="round_1_{{ str_slug(str_replace(' (Bonus)', '', $question['name']), '_') }}_score" value="0" data-max-score="{{ $question['points'] }}"/>
                                         <span class="question-name">{{ $question['name'] }}</span>
                                     </td>
                                     <td style="width: 10%; <?= ( $count == 0 ) ? 'border-top: 0px;' : ''; ?>">
-                                        <div class="correct" @click="changeQuestionScore('correct', {{ $count + 1 }})">
+                                        <div class="correct" @click="changeRound1QuestionScore('correct', {{ $count + 1 }})">
                                             correct
                                         </div>
                                     </td>
                                     <td <?= ( $count == 0 ) ? 'style="border-top: 0px;"' : ''; ?>>
-                                        <div class="incorrect" @click="changeQuestionScore('incorrect', {{ $count + 1 }})">
+                                        <div class="incorrect" @click="changeRound1QuestionScore('incorrect', {{ $count + 1 }})">
                                             incorrect
                                         </div>
                                     </td>
                                 </tr>
                                 @endforeach
+                            </table>
+                        </div>
+                    </div>
 
+                    <div class="panel panel-default">
+                        <div class="table-responsive">
+                            <table class="table table-quiz">
+                                @foreach ( $quiz->questions() as $count => $question )
+                                <tr id="round2{{ str_slug(str_replace(' (Bonus)', '', $question['name']), '') }}">
+                                    <td style="width: 80%; <?= ( $count == 0 ) ? 'border-top: 0px;' : ''; ?>">
+                                        <input type="hidden" name="round_2_{{ str_slug(str_replace(' (Bonus)', '', $question['name']), '_') }}_score" value="0" data-max-score="{{ $question['points'] }}"/>
+                                        <span class="question-name">{{ $question['name'] }}</span>
+                                    </td>
+                                    <td style="width: 10%; <?= ( $count == 0 ) ? 'border-top: 0px;' : ''; ?>">
+                                        <div class="correct" @click="changeRound2QuestionScore('correct', {{ $count + 1 }})">
+                                            correct
+                                        </div>
+                                    </td>
+                                    <td <?= ( $count == 0 ) ? 'style="border-top: 0px;"' : ''; ?>>
+                                        <div class="incorrect" @click="changeRound2QuestionScore('incorrect', {{ $count + 1 }})">
+                                            incorrect
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="table-responsive">
+                            <table class="table table-quiz">
                                 <tr id="three-in-ten">
                                     <td style="width: 80%;">
                                         <input type="hidden" name="three_in_ten" value="0" />

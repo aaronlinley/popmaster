@@ -18,8 +18,9 @@ class QuizController extends Controller
 
     public function create()
     {
+        $user = Auth::user();
         $fiveDaysAgo = Carbon::today()->subWeek();
-        $quizzesThisWeek = Quiz::all()->where('created_at', '>=', $fiveDaysAgo->toDateTimeString())->count();
+        $quizzesThisWeek = $user->quizzes->where('created_at', '>=', $fiveDaysAgo->toDateTimeString())->count();
         if ( $quizzesThisWeek >= 5 ) {
             flash("You've already had your fill for this week!")->warning();
             return redirect('/');
@@ -39,28 +40,44 @@ class QuizController extends Controller
     public function update(Request $request, Quiz $quiz)
     {
         $scores = [
-            'question_1' => $request->question_1_score,
-            'question_2' => $request->question_2_score,
-            'question_3' => $request->question_3_score,
-            'question_4' => $request->question_4_score,
-            'question_5' => $request->question_5_score,
-            'question_6' => $request->question_6_score,
-            'question_7' => $request->question_7_score,
-            'question_8' => $request->question_8_score,
-            'question_9' => $request->question_9_score,
-            'question_10' => $request->question_10_score,
+            'round_1' => [
+                'question_1' => $request->round_1_question_1_score,
+                'question_2' => $request->round_1_question_2_score,
+                'question_3' => $request->round_1_question_3_score,
+                'question_4' => $request->round_1_question_4_score,
+                'question_5' => $request->round_1_question_5_score,
+                'question_6' => $request->round_1_question_6_score,
+                'question_7' => $request->round_1_question_7_score,
+                'question_8' => $request->round_1_question_8_score,
+                'question_9' => $request->round_1_question_9_score,
+                'question_10' => $request->round_1_question_10_score,
+            ],
+            'round_2' => [
+                'question_1' => $request->round_2_question_1_score,
+                'question_2' => $request->round_2_question_2_score,
+                'question_3' => $request->round_2_question_3_score,
+                'question_4' => $request->round_2_question_4_score,
+                'question_5' => $request->round_2_question_5_score,
+                'question_6' => $request->round_2_question_6_score,
+                'question_7' => $request->round_2_question_7_score,
+                'question_8' => $request->round_2_question_8_score,
+                'question_9' => $request->round_2_question_9_score,
+                'question_10' => $request->round_2_question_10_score,
+            ]
         ];
-        foreach ( $scores as $question => $score ) {
-            $quiz->total_points += $score;
+
+        $totalPoints = [];
+        foreach ( $scores as $round => $roundScores ) {
+            $totalPoints[$round] = 0;
+            foreach ( $roundScores as $question => $score ) {
+                $totalPoints[$round] += $score;
+            }
         }
+        $quiz->total_points = json_encode($totalPoints);
         $quiz->question_marks = json_encode($scores);
         $quiz->{'3_in_10'} = $request->three_in_ten;
         $quiz->save();
-        if ( $quiz->total_points !== 0 ) {
-            flash("Congrats! You got <strong>$quiz->total_points</strong> on your most recent quiz!")->success();
-        } else {
-            flash("Better luck next time!")->success();
-        }
+        flash("Congrats! You got <strong>".json_decode($quiz->total_points,true)['round_1']."</strong> on Round 1 & <strong>".json_decode($quiz->total_points,true)['round_2']."</strong> in Round 2!")->success();
         return redirect('/');
     }
 }

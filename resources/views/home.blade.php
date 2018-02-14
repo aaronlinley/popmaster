@@ -21,7 +21,7 @@
                     <h2 class="panel-title text-center">Your Highest Ever Score</h2>
                 </div>
                 <div class="panel-body text-center">
-                    <span class="lead">{{ $bestQuiz->total_points }}</span>
+                    <span class="lead">{{ $highScore }}</span>
                     <br/>
                     <small class="text-muted">on {{ $bestQuiz->created_at->format('d/m/Y') }}</small>
                 </div>
@@ -34,7 +34,11 @@
                     <h2 class="panel-title text-center">Your Most Recent Score</h2>
                 </div>
                 <div class="panel-body text-center">
-                    <span class="lead">{{ $mostRecentQuiz->total_points }}</span>
+                    <span class="lead">
+                        Round 1: {{ json_decode($mostRecentQuiz->total_points,true)['round_1'] }}
+                        -
+                        Round 2: {{ json_decode($mostRecentQuiz->total_points,true)['round_2'] }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -63,15 +67,15 @@
                         <table class="table" style="margin-bottom: 0px;">
                             <thead>
                                 <tr>
-                                    <th width="85%">Question</th>
+                                    <th>Round</th>
                                     <th class="text-right">Points</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ( json_decode($quiz->question_marks) as $question => $points)
+                                @foreach ( json_decode($quiz->question_marks, true) as $round => $questions)
                                 <tr>
-                                    <td>{{ str_replace('_', ' ', title_case($question)) }}</td>
-                                    <td class="text-right">{{ $points }}</td>
+                                    <td>{{ title_case(str_replace('_', ' ', $round)) }}</td>
+                                    <td class="text-right">{{ json_decode($quiz->total_points, true)[$round] }}</td>
                                 </tr>
                                 @endforeach
                                 <tr>
@@ -80,7 +84,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Total Points</strong></td>
-                                    <td class="text-right"><strong>{{ $quiz->total_points }}</strong></td>
+                                    <td class="text-right"><strong>Round 1: {{ json_decode($mostRecentQuiz->total_points,true)['round_1'] }} - Round 2: {{ json_decode($mostRecentQuiz->total_points,true)['round_2'] }}</strong></td>
                                 </tr>
                             </tbody>
                         </table>

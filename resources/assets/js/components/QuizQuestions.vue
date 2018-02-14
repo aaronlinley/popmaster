@@ -4,23 +4,42 @@
             console.log('Component mounted.')
         },
         methods: {
-            changeQuestionScore: function(result, questionNumber) {
+            changeRound1QuestionScore: function(result, questionNumber) {
                 var self = this;
-                var score = $('input[type="hidden"][name="question_'+questionNumber+'_score"]').val();
-                var maxScore = $('input[type="hidden"][name="question_'+questionNumber+'_score"]').attr('data-max-score');
+                var score = $('input[type="hidden"][name="round_1_question_'+questionNumber+'_score"]').val();
+                var maxScore = $('input[type="hidden"][name="round_1_question_'+questionNumber+'_score"]').attr('data-max-score');
                 if ( result == 'correct' ) {
                     if ( score == 0 || score == 1 ) {
-                        $('input[type="hidden"][name="question_'+questionNumber+'_score"]').val(maxScore);
-                        $('#question'+questionNumber).find('.incorrect').text('incorrect');
-                        $('#question'+questionNumber).find('.correct').text(maxScore);
+                        $('input[type="hidden"][name="round_1_question_'+questionNumber+'_score"]').val(maxScore);
+                        $('#round1question'+questionNumber).find('.incorrect').text('incorrect');
+                        $('#round1question'+questionNumber).find('.correct').text(maxScore);
                     } else {
-                        $('input[type="hidden"][name="question_'+questionNumber+'_score"]').val(score - 1);
-                        $('#question'+questionNumber).find('.correct').text(score - 1);
+                        $('input[type="hidden"][name="round_1_question_'+questionNumber+'_score"]').val(score - 1);
+                        $('#round1question'+questionNumber).find('.correct').text(score - 1);
                     }
                 } else {
-                    $('input[type="hidden"][name="question_'+questionNumber+'_score"]').val(0);
-                    $('#question'+questionNumber).find('.correct').text('correct');
-                    $('#question'+questionNumber).find('.incorrect').text('0');
+                    $('input[type="hidden"][name="round_1_question_'+questionNumber+'_score"]').val(0);
+                    $('#round1question'+questionNumber).find('.correct').text('correct');
+                    $('#round1question'+questionNumber).find('.incorrect').text('0');
+                }
+            },
+            changeRound2QuestionScore: function(result, questionNumber) {
+                var self = this;
+                var score = $('input[type="hidden"][name="round_2_question_'+questionNumber+'_score"]').val();
+                var maxScore = $('input[type="hidden"][name="round_2_question_'+questionNumber+'_score"]').attr('data-max-score');
+                if ( result == 'correct' ) {
+                    if ( score == 0 || score == 1 ) {
+                        $('input[type="hidden"][name="round_2_question_'+questionNumber+'_score"]').val(maxScore);
+                        $('#round2question'+questionNumber).find('.incorrect').text('incorrect');
+                        $('#round2question'+questionNumber).find('.correct').text(maxScore);
+                    } else {
+                        $('input[type="hidden"][name="round_2_question_'+questionNumber+'_score"]').val(score - 1);
+                        $('#round2question'+questionNumber).find('.correct').text(score - 1);
+                    }
+                } else {
+                    $('input[type="hidden"][name="round_2_question_'+questionNumber+'_score"]').val(0);
+                    $('#round2question'+questionNumber).find('.correct').text('correct');
+                    $('#round2question'+questionNumber).find('.incorrect').text('0');
                 }
             },
             threeInTen: function(result) {

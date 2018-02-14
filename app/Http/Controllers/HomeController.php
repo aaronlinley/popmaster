@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Quiz;
 use Carbon\Carbon;
 
+use Auth;
+
 class HomeController extends Controller
 {
     /**
@@ -27,23 +29,33 @@ class HomeController extends Controller
     public function index()
     {
         $variables = [];
-        if ( Quiz::all()->count() > 0 ) {
-            $quizzes = Quiz::all()->sortByDesc('created_at');
+        $user = Auth::user();
+        if ( $user->quizzes->count() > 0 ) {
+            $quizzes = $user->quizzes->sortByDesc('created_at');
             $mostRecent = $quizzes->first();
 
             $created = new Carbon($mostRecent->created_at);
             $now = Carbon::now();
             $difference = ($created->diff($now)->days < 1) ? 'today' : $created->diffForHumans($now);
 
-            $highScore = Quiz::max('total_points');
-            $highQuiz = $quizzes->where('total_points', $highScore)->first();
+            $allScores = [];
+            foreach ( $quizzes as $quiz ) {
+                $totalPoints = json_decode( $quiz->total_points, true );
+                $allScores[$quiz->id.'_round_1'] = $totalPoints['round_1'];
+                $allScores[$quiz->id.'_round_2'] = $totalPoints['round_2'];
+            }
 
-            $average = Quiz::avg('total_points');
+            $highScore = max($allScores);
+            $highScoreQuizId = array_search($highScore, $allScores);
+            $highQuiz = $quizzes->where('id', $highScoreQuizId)->first();
+
+            $average = array_sum($allScores) / count($allScores);
 
             $variables = [
                 'quizzes' => $quizzes,
                 'averageScore' => $average,
                 'bestQuiz' => $highQuiz,
+                'highScore' => $highScore,
                 'mostRecentQuiz' => $mostRecent,
                 'mostRecentQuizDifference' => $difference,
             ];

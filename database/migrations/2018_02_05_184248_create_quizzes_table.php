@@ -16,7 +16,7 @@ class CreateQuizzesTable extends Migration
         Schema::create('quizzes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('total_points')->default(0);
+            $table->text('total_points')->nullable();
             $table->boolean('3_in_10')->default(0);
             $table->text('question_marks')->nullable();
             $table->timestamps();
