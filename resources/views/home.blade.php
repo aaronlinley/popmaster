@@ -82,10 +82,6 @@
                                     <td>3 in 10?</td>
                                     <td class="text-right">{{ $quiz->{'3_in_10'} ? 'Yes' : 'No' }}</td>
                                 </tr>
-                                <tr>
-                                    <td><strong>Total Points</strong></td>
-                                    <td class="text-right"><strong>Round 1: {{ json_decode($mostRecentQuiz->total_points,true)['round_1'] }} - Round 2: {{ json_decode($mostRecentQuiz->total_points,true)['round_2'] }}</strong></td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
