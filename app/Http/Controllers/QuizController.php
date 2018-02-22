@@ -21,15 +21,15 @@ class QuizController extends Controller
         $user = Auth::user();
         $fiveDaysAgo = Carbon::today()->subWeek();
         $quizzesThisWeek = $user->quizzes->where('created_at', '>=', $fiveDaysAgo->toDateTimeString())->count();
-        if ( $quizzesThisWeek >= 5 ) {
-            flash("You've already had your fill for this week!")->warning();
-            return redirect('/');
-        } else {
+        // if ( $quizzesThisWeek >= 5 ) {
+        //     flash("You've already had your fill for this week!")->warning();
+        //     return redirect('/');
+        // } else {
             $quiz = Quiz::create([
                 'user_id' => Auth::id(),
             ]);
             return redirect(route('quiz.show', $quiz));
-        }
+        // }
     }
 
     public function show(Quiz $quiz)
